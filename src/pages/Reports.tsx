@@ -16,8 +16,10 @@ import {
   AlertCircle
 } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Reports = () => {
+  const navigate = useNavigate();
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -212,7 +214,11 @@ const Reports = () => {
                 </thead>
                 <tbody>
                   {filteredReports.map((report) => (
-                    <tr key={report.id} className="border-b border-border hover:bg-muted/30 transition-colors">
+                    <tr 
+                      key={report.id} 
+                      className="border-b border-border hover:bg-muted/30 transition-colors cursor-pointer"
+                      onClick={() => navigate(`/reports/${report.id}`)}
+                    >
                       <td className="py-4 px-2">
                         <div className="font-mono text-sm font-medium">{report.id}</div>
                         <div className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
@@ -249,16 +255,34 @@ const Reports = () => {
                       </td>
                       <td className="py-4 px-2">
                         <div className="flex items-center gap-1">
-                          <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                          <Button 
+                            size="sm" 
+                            variant="ghost" 
+                            className="h-8 w-8 p-0"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/reports/${report.id}`);
+                            }}
+                          >
                             <Eye className="h-4 w-4" />
                           </Button>
                           
                           {!report.assignedTech ? (
-                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                            <Button 
+                              size="sm" 
+                              variant="ghost" 
+                              className="h-8 w-8 p-0"
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               <UserPlus className="h-4 w-4" />
                             </Button>
                           ) : (
-                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                            <Button 
+                              size="sm" 
+                              variant="ghost" 
+                              className="h-8 w-8 p-0"
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               <RotateCcw className="h-4 w-4" />
                             </Button>
                           )}
